@@ -3,6 +3,8 @@ import express from "express";
 import http from 'http';
 import mongoose, { startSession } from "mongoose";
 import Logging from "./api/library/Logging";
+import authorRoutes from './api/routes/AuthorRoutes';
+
 
 const app = express();
 
@@ -31,7 +33,7 @@ const start = () => {
     app.use(express.json());
 
 
-    /** Rusel of our API */
+    /** Rulles of our API */
     app.use((req, res, next) => {
 
         res.header('Acess-Control-Allow-Origin', '*');
@@ -45,6 +47,10 @@ const start = () => {
     });
 
     /**Routes */
+    app.use('/authors', authorRoutes);
+
+
+    /** Healthcheck */
     app.get('/ping', (res, req, next) => { req.status(200).json({ message: 'pong' }) });
 
     /**Error handling */
