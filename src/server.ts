@@ -4,6 +4,7 @@ import http from 'http';
 import mongoose, { startSession } from "mongoose";
 import Logging from "./api/library/Logging";
 import authorRoutes from './api/routes/AuthorRoutes';
+import bookRoutes from './api/routes/BookRoutes';
 
 
 const app = express();
@@ -48,7 +49,7 @@ const start = () => {
 
     /**Routes */
     app.use('/authors', authorRoutes);
-
+    app.use('/books', bookRoutes);
 
     /** Healthcheck */
     app.get('/ping', (res, req, next) => { req.status(200).json({ message: 'pong' }) });
