@@ -11,7 +11,7 @@ const create = (req: Request, res: Response, next: NextFunction) => {
     });
     return author
         .save()
-        .then((author) => res.status(201).json({ author }))
+        .then(() => res.status(201).json({ msg: "author succ created" }))
         .catch((error) => res.status(500).json({ error }));
 };
 

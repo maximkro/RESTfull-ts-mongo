@@ -20,10 +20,10 @@ export const ValidateSchema = (schema: ObjectSchema) => {
 export const Schemas = {
     author: {
         create: Joi.object<IAuthor>({
-            name: Joi.string().required()
+            name: Joi.string().regex(/^[0-9a-fA-F]{3}$/).required()
         }),
         update: Joi.object<IAuthor>({
-            name: Joi.string().required()
+            name: Joi.string().regex(/^[0-9a-fA-F]{3}$/).required()
         })
     },
     book: {

@@ -1,17 +1,13 @@
 import { config } from "./api/config/config";
 import express from "express";
-import http from 'http';
 import mongoose, { startSession } from "mongoose";
 import Logging from "./api/library/Logging";
-import authorRoutes from './api/routes/AuthorRoutes';
-import bookRoutes from './api/routes/BookRoutes';
+import app from './app';
 
-
-const app = express();
 
 mongoose.connect(config.mongo.url, { retryWrites: true, writeConcern: { w: "majority" } })
     .then(() => {
-        Logging.info('Connected to mongoDB');
+        //Logging.info('Connected to mongoDB');
         start();
     })
     .catch(() => { Logging.error('unable to Connect..') });
@@ -20,18 +16,18 @@ mongoose.connect(config.mongo.url, { retryWrites: true, writeConcern: { w: "majo
 const start = () => {
     app.use((req, res, next) => {
         /**Log the request */
-        Logging.info(`Incoming -> Method: [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
+        //Logging.info(`Incoming -> Method: [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
         res.on('finish', () => {
             /**Log the response */
-            Logging.info(`Incoming -> Method: [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}] - Status: [${res.statusCode}]`);
+            // Logging.info(`Incoming -> Method: [${req.method}] - Url: [${req.url}] - IP: [${req.socket.remoteAddress}] - Status: [${res.statusCode}]`);
 
         });
         next();
     });
 
     app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
+    //app.use(express.json());
 
 
     /** Rulles of our API */
@@ -48,8 +44,8 @@ const start = () => {
     });
 
     /**Routes */
-    app.use('/authors', authorRoutes);
-    app.use('/books', bookRoutes);
+    // app.use('/authors', authorRoutes);
+    // app.use('/api/books', bookRoutes);
 
     /** Healthcheck */
     app.get('/ping', (res, req, next) => { req.status(200).json({ message: 'pong' }) });
@@ -62,5 +58,6 @@ const start = () => {
         return res.status(404).json({ message: error.message });
     });
 
-    http.createServer(app).listen(config.server.port, () => { Logging.info(`Server runs on PORT ${config.server.port}`) })
+    //http.createServer(app).listen(config.server.port, () => { Logging.info(`Server runs on PORT ${config.server.port}`) })
+    app.listen(config.server.port, () => console.log('server runs...'));
 };
